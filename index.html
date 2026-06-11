@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SimuRev 2025 — Tous les statuts juridiques</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1a2744;--navy-mid:#243360;--navy-light:#2e4080;
+  --gold:#f0a500;--gold-bg:#fffbeb;
+  --cream:#f8f6f1;--white:#fff;
+  --text:#1a2744;--muted:#6b7a9e;--border:#dde3f0;
+  --ok:#16a34a;--warn:#d97706;--danger:#dc2626;
+  /* statut colors */
+  --c-me:#3b82f6;--c-ei:#8b5cf6;
+  --c-eurl:#059669;--c-sasu:#f0a500;
+  --c-sarl-maj:#0891b2;--c-sarl-min:#7c3aed;
+  --c-sas:#ea580c;--c-sa:#9333ea;--c-snc:#be123c;
+}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
+
+/* ── HEADER ── */
+header{background:var(--navy);padding:20px 36px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 4px 20px rgba(26,39,68,.35)}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-icon{width:38px;height:38px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;color:var(--navy)}
+.logo-text{color:#fff}
+.logo-text strong{font-size:16px;font-weight:700;display:block}
+.logo-text span{font-size:11px;color:rgba(255,255,255,.45)}
+.badge-year{background:var(--gold);color:var(--navy);font-size:10px;font-weight:800;padding:2px 7px;border-radius:8px;margin-left:6px;vertical-align:middle}
+.header-right{font-size:10px;color:rgba(255,255,255,.35);text-align:right;line-height:1.6}
+
+/* ── LAYOUT ── */
+main{max-width:1300px;margin:0 auto;padding:32px 20px 80px}
+.intro{text-align:center;margin-bottom:32px}
+.intro h1{font-size:24px;font-weight:700;margin-bottom:6px}
+.intro p{color:var(--muted);font-size:13px}
+
+/* ── PANELS ── */
+.panel{background:var(--white);border-radius:14px;padding:24px;margin-bottom:18px;box-shadow:0 2px 10px rgba(26,39,68,.07);border:1px solid var(--border)}
+.panel-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.inputs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}
+.field{display:flex;flex-direction:column;gap:6px}
+label{font-size:12px;font-weight:500}
+label em{color:var(--muted);font-style:normal;font-weight:400}
+input[type=number],select{padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Mono',monospace;font-size:13px;background:var(--cream);color:var(--text);outline:none;width:100%;transition:border-color .15s}
+input[type=number]:focus,select:focus{border-color:var(--navy-light);background:#fff}
+.hint{font-size:10px;color:var(--muted);line-height:1.4}
+.tg{display:flex;gap:6px;flex-wrap:wrap}
+.tb{padding:7px 12px;border-radius:16px;border:1.5px solid var(--border);background:var(--cream);font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s}
+.tb.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.tb:hover:not(.active){border-color:var(--navy-light);color:var(--navy)}
+
+/* ── CATEGORY LABELS ── */
+.cat-header{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:12px;margin-top:8px;display:flex;align-items:center;gap:8px}
+.cat-header::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── STATUT FILTER PILLS ── */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;align-items:center}
+.filter-label{font-size:11px;color:var(--muted);font-weight:600;margin-right:4px}
+.fpill{padding:5px 13px;border-radius:16px;border:1.5px solid var(--border);background:var(--cream);font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s}
+.fpill.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.fpill:hover:not(.active){border-color:var(--navy-light);color:var(--navy)}
+
+/* ── RESULTS GRID ── */
+.results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:16px;margin-bottom:24px}
+
+/* ── CARD ── */
+.scard{background:var(--white);border-radius:14px;padding:20px;box-shadow:0 2px 10px rgba(26,39,68,.07);border:1px solid var(--border);border-top:4px solid #ccc;transition:transform .18s,box-shadow .18s;position:relative}
+.scard:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(26,39,68,.12)}
+.scard[data-key=me]{border-top-color:var(--c-me)}
+.scard[data-key=ei]{border-top-color:var(--c-ei)}
+.scard[data-key=eurl]{border-top-color:var(--c-eurl)}
+.scard[data-key=sasu]{border-top-color:var(--c-sasu)}
+.scard[data-key=sarl_maj]{border-top-color:var(--c-sarl-maj)}
+.scard[data-key=sarl_min]{border-top-color:var(--c-sarl-min)}
+.scard[data-key=sas]{border-top-color:var(--c-sas)}
+.scard[data-key=sa]{border-top-color:var(--c-sa)}
+.scard[data-key=snc]{border-top-color:var(--c-snc)}
+
+.scard.hidden{display:none}
+
+.ch{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.cbadge{font-size:10px;font-weight:800;letter-spacing:.05em;padding:3px 9px;border-radius:14px}
+.badge-me{background:#eff6ff;color:var(--c-me)}
+.badge-ei{background:#f5f3ff;color:var(--c-ei)}
+.badge-eurl{background:#ecfdf5;color:var(--c-eurl)}
+.badge-sasu{background:#fffbeb;color:var(--warn)}
+.badge-sarl_maj{background:#ecfeff;color:var(--c-sarl-maj)}
+.badge-sarl_min{background:#f5f3ff;color:var(--c-sarl-min)}
+.badge-sas{background:#fff7ed;color:var(--c-sas)}
+.badge-sa{background:#faf5ff;color:var(--c-sa)}
+.badge-snc{background:#fff1f2;color:var(--c-snc)}
+
+.cregime{font-size:9px;color:var(--muted);text-align:right;max-width:110px;line-height:1.4}
+.clabel{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.cval{font-family:'DM Mono',monospace;font-size:24px;font-weight:500;color:var(--navy);line-height:1}
+.cmensuel{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-top:2px}
+
+.split{display:flex;gap:7px;margin-top:9px;flex-wrap:wrap}
+.split-box{background:var(--cream);border-radius:7px;padding:7px 10px;flex:1;min-width:85px}
+.sl{font-size:9px;color:var(--muted);font-weight:600;margin-bottom:1px}
+.sv{font-family:'DM Mono',monospace;font-size:12px;font-weight:600;color:var(--navy)}
+
+.divider{height:1px;background:var(--border);margin:13px 0}
+.brows{display:flex;flex-direction:column;gap:5px}
+.brow{display:flex;justify-content:space-between;align-items:center;font-size:11px}
+.bl{color:var(--muted);display:flex;align-items:center;gap:5px}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.d1{background:#fca5a5}.d2{background:#fde68a}.d3{background:#86efac}
+.d4{background:#93c5fd}.d5{background:#6ee7b7}.d6{background:#f9a8d4}
+.bv{font-family:'DM Mono',monospace;font-size:11px;font-weight:500}
+.bp{font-size:9px;color:var(--muted);margin-left:4px}
+
+.rbar{height:6px;border-radius:3px;background:var(--border);overflow:hidden;display:flex;margin-top:11px}
+.rb1{background:#fca5a5}.rb2{background:#fde68a}.rb3{background:#86efac}
+
+.tags{margin-top:8px;display:flex;flex-wrap:wrap;gap:4px}
+.tag{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:5px;font-size:10px;font-weight:700}
+.tok{background:#ecfdf5;color:var(--ok)}
+.twarn{background:#fffbeb;color:var(--warn)}
+.tover{background:#fef2f2;color:var(--danger)}
+.tinfo{background:#eff6ff;color:#2563eb}
+.tpurple{background:#f5f3ff;color:#7c3aed}
+
+/* ── TABLE ── */
+.tbl-wrap{background:var(--white);border-radius:14px;padding:24px;box-shadow:0 2px 10px rgba(26,39,68,.07);border:1px solid var(--border);margin-bottom:24px;overflow-x:auto}
+.tbl-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:16px}
+table{width:100%;border-collapse:collapse;font-size:11px}
+th{text-align:left;padding:8px 11px;background:var(--cream);font-size:10px;font-weight:700;letter-spacing:.05em;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:10px 11px;border-bottom:1px solid var(--border);font-family:'DM Mono',monospace;font-size:11px}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafbff}
+.best{color:var(--ok);font-weight:700}
+.worst{color:var(--danger)}
+.pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:9px;font-weight:800;font-family:Inter,sans-serif;white-space:nowrap}
+
+/* ── FICHES ── */
+.fiches-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.fiche{background:var(--white);border-radius:12px;padding:16px;border:1px solid var(--border);border-left:3px solid #ccc}
+.fiche[data-key=me]{border-left-color:var(--c-me)}
+.fiche[data-key=ei]{border-left-color:var(--c-ei)}
+.fiche[data-key=eurl]{border-left-color:var(--c-eurl)}
+.fiche[data-key=sasu]{border-left-color:var(--c-sasu)}
+.fiche[data-key=sarl_maj]{border-left-color:var(--c-sarl-maj)}
+.fiche[data-key=sarl_min]{border-left-color:var(--c-sarl-min)}
+.fiche[data-key=sas]{border-left-color:var(--c-sas)}
+.fiche[data-key=sa]{border-left-color:var(--c-sa)}
+.fiche[data-key=snc]{border-left-color:var(--c-snc)}
+.fiche h3{font-size:11px;font-weight:700;margin-bottom:6px}
+.fiche p{font-size:10px;color:var(--muted);line-height:1.6}
+
+.disclaimer{margin-top:20px;padding:12px 16px;background:#fffbeb;border:1px solid #fde68a;border-radius:9px;font-size:10px;color:#92400e;line-height:1.7}
+
+/* notice */
+.notice{background:#eff6ff;border:1px solid #bfdbfe;border-radius:9px;padding:11px 14px;font-size:11px;color:#1e40af;margin-bottom:16px;display:flex;gap:8px;line-height:1.5}
+
+@media(max-width:640px){header{padding:14px 16px}main{padding:16px 12px 60px}.panel{padding:16px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <div class="logo-icon">€</div>
+    <div class="logo-text">
+      <strong>StatutPro <span class="badge-year">2025</span></strong>
+      <span>Simulateur tous statuts juridiques · Taux officiels 2025</span>
+    </div>
+  </div>
+  <div class="header-right">Barème IR 2025 · PASS 47 100 €<br>9 statuts comparés</div>
+</header>
+
+<main>
+  <div class="intro">
+    <h1>Comparateur de revenus nets — Tous statuts</h1>
+    <p>Micro-entreprise · EI · EURL · EURL IS · SARL (maj. / min.) · SASU · SAS · SA · SNC · Taux 2025</p>
+  </div>
+
+  <!-- PARAMÈTRES GÉNÉRAUX -->
+  <div class="panel">
+    <div class="panel-title">⚙ Paramètres généraux</div>
+    <div class="inputs-grid">
+      <div class="field">
+        <label>Chiffre d'affaires <em>(€/an HT)</em></label>
+        <input type="number" id="ca" value="80000" min="0" max="5000000" step="1000">
+        <span class="hint">CA brut annuel hors taxes</span>
+      </div>
+      <div class="field">
+        <label>Type d'activité</label>
+        <select id="activite">
+          <option value="bic_vente">BIC — Vente de marchandises</option>
+          <option value="bic_service" selected>BIC — Prestations de services</option>
+          <option value="bnc">BNC — Libéraux / Conseils</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Frais professionnels <em>(€/an)</em></label>
+        <input type="number" id="frais" value="8000" min="0" step="500">
+        <span class="hint">Charges réelles déductibles (hors micro)</span>
+      </div>
+      <div class="field">
+        <label>Situation familiale</label>
+        <select id="parts">
+          <option value="1" selected>Célibataire (1 part)</option>
+          <option value="1.5">Célibataire + 1 enfant (1,5)</option>
+          <option value="2">Couple sans enfant (2 parts)</option>
+          <option value="2.5">Couple + 1 enfant (2,5)</option>
+          <option value="3">Couple + 2 enfants (3 parts)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARAMÈTRES SOCIÉTÉS -->
+  <div class="panel">
+    <div class="panel-title">🏢 Options sociétés (EURL, SARL, SASU, SAS, SA)</div>
+    <div class="notice"><span>ℹ️</span><div><strong>Mode salaire net cible :</strong> indiquez le net mensuel souhaité. Le simulateur calcule à rebours le coût réel (TNS ou assimilé salarié), puis l'IS sur le résultat restant et les dividendes nets au PFU 30 %.</div></div>
+    <div class="inputs-grid">
+      <div class="field">
+        <label>Salaire net mensuel visé <em>(€/mois)</em></label>
+        <input type="number" id="salNet" value="2000" min="0" step="100">
+        <span class="hint">Net après charges sociales, avant IR</span>
+      </div>
+      <div class="field">
+        <label>Option fiscale EI</label>
+        <div class="tg">
+          <button class="tb active" data-field="fiscalEI" data-val="ir" onclick="setToggle(this,'fiscalEI')">IR (réel)</button>
+          <button class="tb" data-field="fiscalEI" data-val="is" onclick="setToggle(this,'fiscalEI')">IS</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Option fiscale EURL / SARL</label>
+        <div class="tg">
+          <button class="tb" data-field="fiscalSoc" data-val="ir" onclick="setToggle(this,'fiscalSoc')">IR</button>
+          <button class="tb active" data-field="fiscalSoc" data-val="is" onclick="setToggle(this,'fiscalSoc')">IS</button>
+        </div>
+        <span class="hint">IS : 15 % ≤ 42 500 € puis 25 %</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILTRE STATUTS -->
+  <div class="filter-bar">
+    <span class="filter-label">Filtrer :</span>
+    <button class="fpill active" data-filter="all" onclick="setFilter(this,'all')">Tous</button>
+    <button class="fpill" data-filter="solo" onclick="setFilter(this,'solo')">Solo</button>
+    <button class="fpill" data-filter="tns" onclick="setFilter(this,'tns')">TNS</button>
+    <button class="fpill" data-filter="assimile" onclick="setFilter(this,'assimile')">Assimilés salariés</button>
+    <button class="fpill" data-filter="is" onclick="setFilter(this,'is')">IS</button>
+    <button class="fpill" data-filter="ir" onclick="setFilter(this,'ir')">IR</button>
+  </div>
+
+  <!-- RÉSULTATS CARTES -->
+  <div id="results-grid" class="results-grid"></div>
+
+  <!-- TABLEAU COMPARATIF -->
+  <div class="tbl-wrap">
+    <div class="tbl-title">Tableau comparatif — classé par revenu net total ↓</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Statut</th><th>Régime social</th><th>Fiscalité</th>
+          <th>Charges soc.</th><th>IS + IR</th>
+          <th>Salaire net/an</th><th>Dividendes nets</th>
+          <th>Revenu net total</th><th>Net/mois</th><th>Tx prélèv.</th>
+        </tr>
+      </thead>
+      <tbody id="compare-body"></tbody>
+    </table>
+  </div>
+
+  <!-- FICHES STATUTS -->
+  <div class="panel">
+    <div class="panel-title">📋 Caractéristiques des statuts</div>
+    <div class="cat-header">Entreprises individuelles & unipersonnelles</div>
+    <div class="fiches-grid" style="margin-bottom:18px">
+      <div class="fiche" data-key="me"><h3>🔵 Micro-entreprise</h3><p>BIC vente <strong>12,3 %</strong> · BIC services <strong>21,2 %</strong> · BNC <strong>24,6 %</strong> du CA. Plafonds 2025 : 188 700 € / 77 700 €. Aucune déduction de frais. Idéal pour tester une activité.</p></div>
+      <div class="fiche" data-key="ei"><h3>🟣 EI — Entreprise Individuelle</h3><p>TNS. Charges ~<strong>43 %</strong> sur bénéfice. Régime réel IR ou IS. Protection patrimoniale depuis 2022. Adapté aux activités avec charges réelles importantes.</p></div>
+      <div class="fiche" data-key="eurl"><h3>🟢 EURL (gérant associé unique)</h3><p>TNS (gérant majoritaire). Charges ~<strong>43 %</strong> sur rémunération. IS : dividendes PFU 30 % (hors cotis TNS si dividendes &gt; 10 % capital). Séparation patrimoine.</p></div>
+    </div>
+    <div class="cat-header">Sociétés pluripersonnelles & unipersonnelles à associé salarié</div>
+    <div class="fiches-grid" style="margin-bottom:18px">
+      <div class="fiche" data-key="sasu"><h3>🟡 SASU</h3><p>Assimilé salarié. <strong>~82 % du net</strong> (54 % pat. + 28 % sal.). Pas de chômage. Dividendes PFU 30 % sans charges sociales. Idéal pour lever des fonds.</p></div>
+      <div class="fiche" data-key="sarl_maj"><h3>🔷 SARL — Gérant majoritaire</h3><p>TNS (>50 % du capital). Charges ~<strong>43 %</strong>. IS de droit commun. Dividendes SARL : <strong>cotisations TNS si > 10 % du capital</strong> (contrairement à SASU). 2 à 100 associés.</p></div>
+      <div class="fiche" data-key="sarl_min"><h3>🟤 SARL — Gérant minoritaire/égalitaire</h3><p>Assimilé salarié (≤50 % du capital). Charges ~<strong>82 % du net</strong>. Dividendes PFU 30 %. Même régime social que SASU/SAS.</p></div>
+      <div class="fiche" data-key="sas"><h3>🟠 SAS — Société par Actions Simplifiée</h3><p>Président assimilé salarié. Charges ~<strong>82 % du net</strong>. IS obligatoire. Dividendes PFU 30 %. Très flexible. Idéal pour lever des fonds. Minimum 2 associés.</p></div>
+      <div class="fiche" data-key="sa"><h3>🟣 SA — Société Anonyme</h3><p>Président du CA assimilé salarié. Charges ~<strong>82 % du net</strong>. Minimum <strong>7 associés</strong> (2 si non cotée, hors bourse). IS obligatoire. Capital minimum 37 000 €. Lourd à gérer.</p></div>
+      <div class="fiche" data-key="snc"><h3>🔴 SNC — Société en Nom Collectif</h3><p>Associés = TNS. Charges ~<strong>43 %</strong>. <strong>IR obligatoire</strong> (sauf option IS). <strong>Responsabilité illimitée et solidaire</strong>. Rare en pratique. Aucun capital minimum.</p></div>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    <strong>⚠️ Estimations indicatives — taux 2025.</strong> Barème IR 2025 (LFI 2026, +0,9 %) · PASS 2025 = 47 100 € · PMSS 2025 = 3 925 €/mois · IS : 15 % ≤ 42 500 € puis 25 %.
+    TNS : taux global ~43 % (cotisations provisionnelles 2025 au barème antérieur à la réforme de l'assiette unique, effective à la régularisation 2026). SASU/SAS/SA/SARL gérant min. : ~82 % du net (54 % pat. + 28 % sal.).
+    SARL gérant maj. : dividendes soumis aux cotisations TNS si > 10 % du capital (non modélisé ici, dividendes traités au PFU 30 %).
+    SA : capital minimum 37 000 €, 2 associés minimum. SNC : responsabilité illimitée et solidaire sur le patrimoine personnel.
+    <strong>Consultez un expert-comptable</strong> pour toute décision structurante.
+  </div>
+</main>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  ÉTAT
+// ═══════════════════════════════════════════════════════════
+const S={ca:80000,activite:'bic_service',frais:8000,salNet:2000,fiscalEI:'ir',fiscalSoc:'is',parts:1,filter:'all'};
+
+// ═══════════════════════════════════════════════════════════
+//  CONSTANTES 2025
+// ═══════════════════════════════════════════════════════════
+const PASS=47100;
+// Micro
+const ME_C={bic_vente:.123,bic_service:.212,bnc:.246};
+const ME_A={bic_vente:.71,bic_service:.50,bnc:.34};
+const ME_P={bic_vente:188700,bic_service:77700,bnc:77700};
+// TNS global ~43 %
+const TNS=.43;
+// SASU/SAS/SA/SARL gérant min — assimilé salarié
+const SAL_SAL=.28, SAL_PAT=.54;
+// IS
+const calcIS=b=>b<=0?0:Math.min(b,42500)*.15+Math.max(0,b-42500)*.25;
+// IR 2025 (barème 1 part, tranches LFI 2026)
+function ir1(r){const t=[[11600,0],[29579,.11],[84577,.30],[181917,.41],[Infinity,.45]];let x=0,p=0;for(const[c,tx]of t){if(r<=p)break;x+=(Math.min(r,c)-p)*tx;p=c}return Math.max(0,x)}
+const calcIR=(r,n)=>ir1(r/n)*n;
+// PFU dividendes = 30 %
+const PFU=.30;
+
+// ═══════════════════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════════════════
+// Calcul standard "société IS + dividendes PFU"
+// salNetA = salaire net annuel voulu
+// regime social = 'tns' | 'sal'
+function calcSociete(ca,frais,salNetA,parts,regimeSocial){
+  let charges,coutDir;
+  if(regimeSocial==='tns'){
+    const cotis=salNetA*TNS;
+    charges=cotis;
+    coutDir=salNetA+cotis;
+  } else {
+    const brut=salNetA/(1-SAL_SAL);
+    charges=brut*(SAL_PAT+SAL_SAL);
+    coutDir=brut*(1+SAL_PAT);
+  }
+  const resultat=Math.max(0,ca-frais-coutDir);
+  const is=calcIS(resultat);
+  const divBrut=Math.max(0,resultat-is);
+  const divNet=divBrut*(1-PFU);
+  const impIR=calcIR(salNetA,parts);
+  const impTot=is+impIR+divBrut*PFU;
+  const net=Math.max(0,salNetA-impIR+divNet);
+  return{charges,coutDir,resultat,is,impotSoc:is,impotIR:impIR,impot:impTot,salNet:salNetA,dividendesNet:divNet,net,
+    chargesPat:regimeSocial==='sal'?salNetA/(1-SAL_SAL)*SAL_PAT:0,
+    chargesSal:regimeSocial==='sal'?salNetA/(1-SAL_SAL)*SAL_SAL:0,
+    salBrut:regimeSocial==='sal'?salNetA/(1-SAL_SAL):0};
+}
+
+// ═══════════════════════════════════════════════════════════
+//  SIMULATEURS
+// ═══════════════════════════════════════════════════════════
+function simME(ca,act,parts){
+  const c=ca*ME_C[act],rf=Math.max(0,ca*(1-ME_A[act])),imp=calcIR(rf,parts),net=ca-c-imp;
+  return{charges:c,impot:imp,impotIR:imp,impotSoc:0,salNet:net,dividendesNet:0,net,coutDir:0,resultat:0,regime:'Micro',plafond:ME_P[act]};
+}
+function simEI(ca,frais,fiscal,parts){
+  const b=Math.max(0,ca-frais),c=b*TNS/(1+TNS),bn=b-c;
+  const imp=fiscal==='ir'?calcIR(bn,parts):calcIS(bn),net=bn-imp;
+  return{charges:c,impot:imp,impotIR:fiscal==='ir'?imp:0,impotSoc:fiscal==='is'?imp:0,salNet:net,dividendesNet:0,net,coutDir:0,resultat:bn,regime:fiscal==='ir'?'Réel IR':'Réel IS'};
+}
+function simEURL(ca,frais,salNetA,fiscalSoc,parts){
+  if(fiscalSoc==='is') return{...calcSociete(ca,frais,salNetA,parts,'tns'),regime:'IS + div. PFU'};
+  // IR : tout remonte
+  const b=Math.max(0,ca-frais),c=b*TNS/(1+TNS),bn=b-c,imp=calcIR(bn,parts);
+  return{charges:c,impot:imp,impotIR:imp,impotSoc:0,salNet:bn-imp,dividendesNet:0,net:Math.max(0,bn-imp),coutDir:0,resultat:bn,regime:'IR réel'};
+}
+function simSARLmaj(ca,frais,salNetA,fiscalSoc,parts){
+  // Gérant majoritaire = TNS
+  if(fiscalSoc==='is') return{...calcSociete(ca,frais,salNetA,parts,'tns'),regime:'IS + div. PFU'};
+  const b=Math.max(0,ca-frais),c=b*TNS/(1+TNS),bn=b-c,imp=calcIR(bn,parts);
+  return{charges:c,impot:imp,impotIR:imp,impotSoc:0,salNet:bn-imp,dividendesNet:0,net:Math.max(0,bn-imp),coutDir:0,resultat:bn,regime:'IR réel'};
+}
+function simSARLmin(ca,frais,salNetA,parts){
+  // Gérant minoritaire/égalitaire = assimilé salarié → même que SASU
+  return{...calcSociete(ca,frais,salNetA,parts,'sal'),regime:'IS — Assimilé sal.'};
+}
+function simSASU(ca,frais,salNetA,parts){
+  return{...calcSociete(ca,frais,salNetA,parts,'sal'),regime:'IS — Assimilé sal.'};
+}
+function simSAS(ca,frais,salNetA,parts){
+  // Président SAS = assimilé salarié, IS obligatoire
+  return{...calcSociete(ca,frais,salNetA,parts,'sal'),regime:'IS — Assimilé sal.'};
+}
+function simSA(ca,frais,salNetA,parts){
+  // Président CA = assimilé salarié, IS obligatoire
+  return{...calcSociete(ca,frais,salNetA,parts,'sal'),regime:'IS — Assimilé sal.'};
+}
+function simSNC(ca,frais,fiscal,parts){
+  // Associés = TNS, IR de droit (option IS rarement utilisée)
+  const b=Math.max(0,ca-frais),c=b*TNS/(1+TNS),bn=b-c,imp=calcIR(bn,parts);
+  return{charges:c,impot:imp,impotIR:imp,impotSoc:0,salNet:bn-imp,dividendesNet:0,net:Math.max(0,bn-imp),coutDir:0,resultat:bn,regime:'IR (resp. illimitée)'};
+}
+
+// ═══════════════════════════════════════════════════════════
+//  FORMAT
+// ═══════════════════════════════════════════════════════════
+const f=n=>new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n||0);
+const pct=(n,ca)=>ca>0?((n/ca)*100).toFixed(1)+' %':'—';
+
+// Metadata des statuts
+const META={
+  me:    {label:'Micro-entreprise',   group:['solo','ir'],              badge:'badge-me',   social:'—',         cap:'Sans'},
+  ei:    {label:'EI',                 group:['solo','tns'],             badge:'badge-ei',   social:'TNS',       cap:'Sans'},
+  eurl:  {label:'EURL',               group:['solo','tns','is'],        badge:'badge-eurl', social:'TNS',       cap:'Sans'},
+  sarl_maj:{label:'SARL — Gérant maj.',group:['tns','is'],              badge:'badge-sarl_maj',social:'TNS',    cap:'1 €'},
+  sarl_min:{label:'SARL — Gérant min.',group:['assimile','is'],         badge:'badge-sarl_min',social:'Assimilé sal.',cap:'1 €'},
+  sasu:  {label:'SASU',               group:['solo','assimile','is'],   badge:'badge-sasu', social:'Assimilé sal.',cap:'Sans'},
+  sas:   {label:'SAS',                group:['assimile','is'],          badge:'badge-sas',  social:'Assimilé sal.',cap:'Sans'},
+  sa:    {label:'SA',                 group:['assimile','is'],          badge:'badge-sa',   social:'Assimilé sal.',cap:'37 000 €'},
+  snc:   {label:'SNC',                group:['tns','ir'],               badge:'badge-snc',  social:'TNS',       cap:'Sans'},
+};
+
+// ═══════════════════════════════════════════════════════════
+//  RENDER PRINCIPAL
+// ═══════════════════════════════════════════════════════════
+function render(){
+  const {ca,activite,frais,salNet,fiscalEI,fiscalSoc,parts,filter}=S;
+  const salA=salNet*12;
+
+  const results={
+    me:    simME(ca,activite,parts),
+    ei:    simEI(ca,frais,fiscalEI,parts),
+    eurl:  simEURL(ca,frais,salA,fiscalSoc,parts),
+    sarl_maj: simSARLmaj(ca,frais,salA,fiscalSoc,parts),
+    sarl_min: simSARLmin(ca,frais,salA,parts),
+    sasu:  simSASU(ca,frais,salA,parts),
+    sas:   simSAS(ca,frais,salA,parts),
+    sa:    simSA(ca,frais,salA,parts),
+    snc:   simSNC(ca,frais,fiscalEI,parts),
+  };
+
+  const nets=Object.values(results).map(r=>r.net);
+  const maxNet=Math.max(...nets), minNet=Math.min(...nets);
+
+  // Tri pour le badge "meilleur"
+  const rankMap={};
+  Object.entries(results).sort((a,b)=>b[1].net-a[1].net).forEach(([k,r],i)=>rankMap[k]=i);
+
+  // ── CARDS ──
+  const grid=document.getElementById('results-grid');
+  grid.innerHTML=Object.entries(results).map(([key,r])=>{
+    const m=META[key];
+    const visible=filter==='all'||m.group.includes(filter);
+    const cPct=ca>0?r.charges/ca:0;
+    const iPct=ca>0?Math.max(0,r.impot)/ca:0;
+    const nPct=ca>0?Math.max(0,r.net)/ca:0;
+
+    // split sal/div pour sociétés IS
+    let splitHtml='';
+    if(r.dividendesNet>0){
+      const salAIR=Math.max(0,r.salNet-(r.impotIR||0));
+      splitHtml=`<div class="split">
+        <div class="split-box"><div class="sl">Salaire (après IR)</div><div class="sv">${f(salAIR)}/an</div></div>
+        <div class="split-box"><div class="sl">Dividendes (PFU)</div><div class="sv">${f(r.dividendesNet)}/an</div></div>
+      </div>`;
+    }
+
+    // lignes extra société
+    let extra='';
+    if(key!=='me'&&key!=='ei'&&key!=='snc'&&r.coutDir>0){
+      extra+=`<div class="brow"><span class="bl"><span class="dot d4"></span>Coût dirigeant soc.</span><span class="bv">${f(r.coutDir)}</span></div>`;
+      extra+=`<div class="brow"><span class="bl"><span class="dot d5"></span>Résultat avant IS</span><span class="bv">${f(r.resultat)}</span></div>`;
+    }
+    if(r.impotSoc>0) extra+=`<div class="brow"><span class="bl"><span class="dot d2"></span>IS société</span><span class="bv">${f(r.impotSoc)}</span></div>`;
+    if(r.salBrut>0) extra+=`<div class="brow"><span class="bl"><span class="dot d6"></span>Salaire brut</span><span class="bv">${f(r.salBrut)} (${f(r.salBrut/12)}/m)</span></div>`;
+
+    // tags
+    let tags='';
+    if(rankMap[key]===0) tags+=`<span class="tag tok">🏆 Meilleur net</span>`;
+    if(rankMap[key]===Object.keys(results).length-1) tags+=`<span class="tag tover">⬇ Plus faible</span>`;
+    if(key==='me'){
+      const ratio=ca/r.plafond;
+      tags+=ratio>1?`<span class="tag tover">⚠ Plafond dépassé</span>`:ratio>.8?`<span class="tag twarn">⚡ ${(ratio*100).toFixed(0)}% plafond</span>`:`<span class="tag tok">✓ Plafond ${f(r.plafond)}</span>`;
+    }
+    if(key==='snc') tags+=`<span class="tag tover">⚠ Resp. illimitée</span>`;
+    if(key==='sa') tags+=`<span class="tag tpurple">Cap. min. 37 000 €</span>`;
+    if(r.impotSoc>0) tags+=`<span class="tag tinfo">IS ${f(r.impotSoc)}</span>`;
+
+    return `<div class="scard${visible?'':' hidden'}" data-key="${key}" data-groups='${JSON.stringify(m.group)}'>
+      <div class="ch">
+        <span class="cbadge ${m.badge}">${m.label}</span>
+        <span class="cregime">${r.regime}<br><span style="color:#93c5fd;font-size:9px">${m.social}</span></span>
+      </div>
+      <div class="clabel">Revenu net total annuel</div>
+      <div class="cval">${f(Math.max(0,r.net))}</div>
+      <div class="cmensuel">→ ${f(Math.max(0,r.net)/12)} / mois</div>
+      ${splitHtml}
+      <div class="divider"></div>
+      <div class="brows">
+        <div class="brow"><span class="bl"><span class="dot d1"></span>Charges sociales</span><span class="bv">${f(r.charges)}<span class="bp">${pct(r.charges,ca)}</span></span></div>
+        ${extra}
+        <div class="brow"><span class="bl"><span class="dot d2"></span>Fiscalité totale</span><span class="bv">${f(Math.max(0,r.impot))}<span class="bp">${pct(r.impot,ca)}</span></span></div>
+        <div class="brow"><span class="bl"><span class="dot d3"></span>Net perçu</span><span class="bv">${f(Math.max(0,r.net))}<span class="bp">${pct(r.net,ca)}</span></span></div>
+      </div>
+      <div class="rbar">
+        <div class="rb1" style="width:${(cPct*100).toFixed(1)}%"></div>
+        <div class="rb2" style="width:${(iPct*100).toFixed(1)}%"></div>
+        <div class="rb3" style="width:${(nPct*100).toFixed(1)}%"></div>
+      </div>
+      <div class="tags">${tags}</div>
+    </div>`;
+  }).join('');
+
+  // ── TABLE ──
+  document.getElementById('compare-body').innerHTML=Object.entries(results)
+    .sort((a,b)=>b[1].net-a[1].net)
+    .map(([key,r],i)=>{
+      const m=META[key];
+      const tp=ca>0?(r.charges+r.impot)/ca:0;
+      const best=i===0, worst=i===Object.keys(results).length-1;
+      return`<tr>
+        <td><span class="pill ${m.badge}">${m.label}</span></td>
+        <td style="font-family:Inter;font-size:10px;color:var(--muted)">${m.social}</td>
+        <td style="font-family:Inter;font-size:10px;color:var(--muted)">${r.regime}</td>
+        <td class="${worst?'worst':''}">${f(r.charges)}</td>
+        <td>${f(Math.max(0,r.impot))}</td>
+        <td>${f(r.salNet)}</td>
+        <td>${f(r.dividendesNet)}</td>
+        <td class="${best?'best':worst?'worst':''}">${f(Math.max(0,r.net))}</td>
+        <td class="${best?'best':''}">${f(Math.max(0,r.net)/12)}</td>
+        <td>${(tp*100).toFixed(1)} %</td>
+      </tr>`;
+    }).join('');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  EVENTS
+// ═══════════════════════════════════════════════════════════
+['ca','frais','salNet'].forEach(id=>document.getElementById(id).addEventListener('input',e=>{S[id]=+e.target.value||0;render()}));
+['activite','parts'].forEach(id=>document.getElementById(id).addEventListener('change',e=>{S[id]=e.target.value==='1'||e.target.value==='1.5'||e.target.value==='2'||e.target.value==='2.5'||e.target.value==='3'?+e.target.value:e.target.value;render()}));
+document.getElementById('parts').addEventListener('change',e=>{S.parts=+e.target.value;render()});
+document.getElementById('activite').addEventListener('change',e=>{S.activite=e.target.value;render()});
+
+function setToggle(btn,field){
+  document.querySelectorAll(`[data-field="${field}"]`).forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); S[field]=btn.dataset.val; render();
+}
+
+function setFilter(btn,f){
+  document.querySelectorAll('.fpill').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); S.filter=f;
+  document.querySelectorAll('.scard').forEach(card=>{
+    const groups=JSON.parse(card.dataset.groups||'[]');
+    card.classList.toggle('hidden',f!=='all'&&!groups.includes(f));
+  });
+}
+
+render();
+</script>
+</body>
+</html>
